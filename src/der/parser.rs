@@ -5,7 +5,7 @@ use nom::bytes::streaming::take;
 use nom::number::streaming::be_u8;
 use nom::{Err, Needed};
 use rusticata_macros::custom_check;
-use std::convert::{Into, TryFrom};
+use core::convert::{Into, TryFrom};
 
 use crate::ber::MAX_RECURSION;
 

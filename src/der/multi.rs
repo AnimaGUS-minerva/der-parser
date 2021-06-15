@@ -6,6 +6,7 @@ use nom::combinator::{all_consuming, complete, cut, map};
 use nom::error::ParseError;
 use nom::multi::many0;
 use nom::{Err, IResult};
+use alloc::vec::Vec;
 
 /// Parse a SEQUENCE OF object
 ///

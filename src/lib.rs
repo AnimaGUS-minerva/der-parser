@@ -219,12 +219,17 @@
     missing_debug_implementations,
 )]
 // pragmas for doc
-#![deny(broken_intra_doc_links)]
+//#![deny(broken_intra_doc_links)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc(test(
     no_crate_inject,
     attr(deny(warnings/*, rust_2018_idioms*/), allow(dead_code, unused_variables))
 ))]
+
+#![no_std]
+
+#[macro_use]
+extern crate alloc;
 
 #[macro_use]
 mod macros;

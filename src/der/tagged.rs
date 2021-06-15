@@ -3,6 +3,7 @@ use crate::der::*;
 use crate::error::*;
 use nom::error::ParseError;
 use nom::{Err, IResult};
+use alloc::boxed::Box;
 
 /// Read a TAGGED EXPLICIT value (combinator)
 ///

@@ -7,8 +7,9 @@ use nom::multi::{many0, many_till};
 use nom::number::streaming::be_u8;
 use nom::{Err, Needed, Offset};
 use rusticata_macros::{combinator::parse_hex_to_u64, custom_check};
-use std::borrow::Cow;
-use std::convert::{Into, TryFrom};
+use alloc::{borrow::Cow, boxed::Box};
+use core::convert::{Into, TryFrom};
+
 
 /// Default maximum recursion limit
 pub const MAX_RECURSION: usize = 50;
@@ -277,7 +278,7 @@ fn ber_read_content_enum(i: &[u8], len: usize) -> BerResult<BerObjectContent> {
 
 fn ber_read_content_utf8string(i: &[u8], len: usize) -> BerResult<BerObjectContent> {
     let (i, bytes) = take(len)(i)?;
-    let s = std::str::from_utf8(bytes)
+    let s = core::str::from_utf8(bytes)
         .map_err(|_| Err::Error(BerError::StringInvalidCharset))
         .map(|s| BerObjectContent::UTF8String(s))?;
     Ok((i, s))
@@ -342,7 +343,7 @@ fn ber_read_content_numericstring<'a>(i: &'a [u8], len: usize) -> BerResult<BerO
     if !bytes.iter().all(is_numeric) {
         return Err(Err::Error(BerError::StringInvalidCharset));
     }
-    let s = std::str::from_utf8(bytes)
+    let s = core::str::from_utf8(bytes)
         .map_err(|_| Err::Error(BerError::StringInvalidCharset))
         .map(|s| BerObjectContent::NumericString(s))?;
     Ok((i, s))
@@ -358,7 +359,7 @@ fn ber_read_content_visiblestring<'a>(i: &'a [u8], len: usize) -> BerResult<BerO
     if !bytes.iter().all(is_visible) {
         return Err(Err::Error(BerError::StringInvalidCharset));
     }
-    let s = std::str::from_utf8(bytes)
+    let s = core::str::from_utf8(bytes)
         .map_err(|_| Err::Error(BerError::StringInvalidCharset))
         .map(|s| BerObjectContent::VisibleString(s))?;
     Ok((i, s))
@@ -392,7 +393,7 @@ fn ber_read_content_printablestring<'a>(
     if !bytes.iter().all(is_printable) {
         return Err(Err::Error(BerError::StringInvalidCharset));
     }
-    let s = std::str::from_utf8(bytes)
+    let s = core::str::from_utf8(bytes)
         .map_err(|_| Err::Error(BerError::StringInvalidCharset))
         .map(|s| BerObjectContent::PrintableString(s))?;
     Ok((i, s))
@@ -413,7 +414,7 @@ fn ber_read_content_ia5string<'a>(i: &'a [u8], len: usize) -> BerResult<BerObjec
     if !bytes.iter().all(u8::is_ascii) {
         return Err(Err::Error(BerError::StringInvalidCharset));
     }
-    let s = std::str::from_utf8(bytes)
+    let s = core::str::from_utf8(bytes)
         .map_err(|_| Err::Error(BerError::StringInvalidCharset))
         .map(|s| BerObjectContent::IA5String(s))?;
     Ok((i, s))
@@ -429,7 +430,7 @@ fn ber_read_content_utctime<'a>(i: &'a [u8], len: usize) -> BerResult<BerObjectC
     if !bytes.iter().all(is_visible) {
         return Err(Err::Error(BerError::StringInvalidCharset));
     }
-    let s = std::str::from_utf8(bytes)
+    let s = core::str::from_utf8(bytes)
         .map_err(|_| Err::Error(BerError::StringInvalidCharset))
         .map(|s| BerObjectContent::UTCTime(s))?;
     Ok((i, s))
@@ -448,7 +449,7 @@ fn ber_read_content_generalizedtime<'a>(
     if !bytes.iter().all(is_visible) {
         return Err(Err::Error(BerError::StringInvalidCharset));
     }
-    let s = std::str::from_utf8(bytes)
+    let s = core::str::from_utf8(bytes)
         .map_err(|_| Err::Error(BerError::StringInvalidCharset))
         .map(|s| BerObjectContent::GeneralizedTime(s))?;
     Ok((i, s))

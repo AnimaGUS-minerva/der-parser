@@ -4,8 +4,7 @@ use crate::ber::BerObject;
 use crate::der::DerObject;
 use nom::error::{ErrorKind, FromExternalError, ParseError};
 use nom::IResult;
-use std::error::Error;
-use std::fmt;
+use core::fmt;
 
 /// Holds the result of parsing functions
 ///
@@ -95,6 +94,7 @@ impl fmt::Display for BerError {
     }
 }
 
+pub trait Error {}
 impl Error for BerError {}
 
 #[cfg(test)]
