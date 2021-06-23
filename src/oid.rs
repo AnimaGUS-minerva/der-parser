@@ -356,7 +356,7 @@ impl<'a> FromStr for Oid<'a> {
 #[cfg(test)]
 mod tests {
     use crate::oid::Oid;
-    use core::borrow::Cow;
+    use alloc::borrow::Cow;
     use core::str::FromStr;
 
     #[test]
